@@ -2,7 +2,8 @@
   $('#order-summary-model').html(`<%= render partial: "order_summary", locals: {order: @order} %>`);
   $('#order-summary-model').show();
 <% else %>
-  // window.location.href = "<%= root_path %>";
-  window.location.href = "<%= orders_path %>";
+  <% if @order %>
+    window.location.href = "<%= orders_path %>";
+  <% end %>
 <% end %>
 $('#flash-message-holder').html(`<%= render partial: "layouts/flash_messages", locals: {flash: flash} %>`)
