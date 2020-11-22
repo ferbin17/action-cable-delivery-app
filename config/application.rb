@@ -10,7 +10,7 @@ module DeliveryApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
-    config.hosts << /[a-z0-9]+(\.([a-z0-9])+)*/
+    config.hosts << /[a-z,0-9, \_, \-]+(\.([a-z, 0-9, \_, \-])+)*/
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
