@@ -1,0 +1,65 @@
+<div class="row signup-background">
+  <div class="col-7 signup-field">
+    <h2 class="dark-red">SIGN UP</h2>
+    <%= form_for(@user, url: sign_up_user_index_path) do |f| %>
+      <%= render partial: "error_messages", locals:{ user: @user} %>
+      <div class="field">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text left-input-group-text">Email :</span>
+          </div>
+          <%= f.text_field :email_id, placeholder: "Email", required: true, class: "form-control email-shower" %>
+          <div class="input-group-append"> </div>
+        </div>
+      </div>
+
+        
+      <div class="field set-password">
+        <% if User.minimum_password_length %>
+          <em>(<%= User.minimum_password_length %> characters minimum)</em><br />
+        <% end %>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text left-input-group-text">Set Password :</span>
+          </div>
+          <%= f.password_field :password, autocomplete: "new-password", placeholder: "New Password", required: true, class: "form-control signup-password-field" %>
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+
+      <div class="field confirm-password">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text left-input-group-text">Confirm Password :</span>
+          </div>
+          <%= f.password_field :confirm_password, autocomplete: "new-password", placeholder: "Confirm Password", required: true, class: "form-control signup-password-field" %>
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      
+      <div class="field confirm-password">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text left-input-group-text">Is Merchant :</span>
+          </div>
+          <%= f.label :is_merchant, "Yes", value: "true"  %>
+          <%= f.radio_button :is_merchant, true, class: "" %>
+          <%= f.label :is_merchant, "No", value: "false" %>
+          <%= f.radio_button :is_merchant, false, checked: true, class: "" %>
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+
+      <div class="field field-right">
+        <%= f.submit "SIGN UP", class: "submit_button" %>
+      </div>
+      
+      <div class="field field-center login-link-margin">
+        <%= link_to "Existing User? LOGIN", login_user_index_path, class: "light-red bold-text login-link" %>
+      </div>
+    <% end %>
+  </div>
+</div>

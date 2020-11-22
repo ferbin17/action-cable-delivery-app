@@ -1,0 +1,8 @@
+<div class="container" order-id="<%= order.id %>">
+  <div class="alert alert-warning alert-dismissable">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+    <% event = order.status.nil? ? "NEW" : "UPDATED" %>
+    <strong><%= event %> ORDER !! Order No.: <%= order.id %></strong>
+    <p><%= link_to "View", orders_path, class: "btn btn-primary" %></p>
+  </div>
+</div>

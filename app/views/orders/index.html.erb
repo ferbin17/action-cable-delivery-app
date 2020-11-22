@@ -1,0 +1,7 @@
+<h4>Orders</h4>
+<div id="orders">
+  <% @orders.each do |order| %>
+    <% color = cycle("primary", "secondary", "success", "danger", "warning", "info", "dark") %>
+    <%= render partial: "order_card", locals: {order: order, user: @current_user, color: color} %>
+  <% end %>
+</div>

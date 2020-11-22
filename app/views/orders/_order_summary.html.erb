@@ -1,0 +1,34 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Order Summary</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <% order.order_products.group_by{|x| x.product.user}.each do |merchant, order_product| %>
+        <%= merchant.email_id %><br>
+        <% order_product.each_with_index do |merchant_product, index| %>
+          <%="#{merchant_product.product.name} - Rs.#{merchant_product.product.price}" %><br>
+        <% end %>
+        <br><br>
+      <% end %>
+      <%= "Total Price: #{order.order_price}" %>
+    </div>
+    <div class="modal-footer">
+      <%= form_for(order, remote: true, html: {id: "confirm_order"}) do |o| %>
+        <button type="submit" class="btn btn-primary">Confirm Order</button>
+        <%= hidden_field_tag :confirmed, true %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+$('.close span').click(function(){
+  $('#order-summary-model').hide();
+  if ($('#new_order').length != 0){
+    $('#new_order')[0].reset();
+  }
+})
+</script>

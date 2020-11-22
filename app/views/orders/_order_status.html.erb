@@ -1,0 +1,17 @@
+<% if order.status != nil %>
+  <%= Order::STATUS[order.status] %>
+<% end %>
+<% if user.is_merchant %>
+  <% if [2, 3, nil].include?(order.status) %>
+    <%= link_to "Reject", update_order_order_path(id: order.id, stage: 1), remote: true, data: {confirm: 'Are you sure?'}, class: "btn btn-primary" %>
+  <% end %>
+  <% if [2, 3, 4].include?(order.status) %>
+    <%= link_to "#{Order::STAGES_AFTER_ACCEPT[order.status]}", update_order_order_path(id: order.id, stage: order.status + 1), remote: true, data: {confirm: 'Are you sure?'}, class: "btn btn-primary" %>
+  <% elsif order.status.nil? %>
+    <%= link_to "Accept", update_order_order_path(id: order.id, stage: 2), remote: true, data: {confirm: 'Are you sure?'}, class: "btn btn-primary" %>
+  <% end %>
+<% else %>
+  <% if order.status == nil %>
+    <%= link_to "Cancel", update_order_order_path(id: order.id, stage: 0), remote: true, data: {confirm: 'Are you sure?'}, class: "btn btn-primary" %>
+  <% end %>
+<% end %>

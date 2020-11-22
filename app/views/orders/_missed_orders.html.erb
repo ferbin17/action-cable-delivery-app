@@ -1,0 +1,22 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Misses Order Summary</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Missed Orders: <%= unattended_orders.count %><br>
+      Total Amount Lost: <%= unattended_orders.sum(&:total_price) %>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+</div>
+<script>
+$('#missed-orders-modal').show();
+$('.close span').click(function(){
+  $('#missed-orders-modal').hide();
+})
+</script>

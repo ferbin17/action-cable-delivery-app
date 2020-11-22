@@ -1,0 +1,19 @@
+<div class="card border-<%= color.to_s %> mb-3" style="max-width: 18rem;" order-id="<%= order.id %>">
+  <div class="card-header">
+    <h5>Order No.: <%= order.id %>
+      <% if user.is_merchant && !order.read_by_merchant && order.status != 0 %>
+        <span class="badge badge-danger badge-secondary">New</span>
+      <% end %>
+    </h5>
+  </div>
+  <div class="card-body text-<%= color.to_s %>"
+    <ul class="list-group list-group-flush">
+      <% order.products.each do |product| %>
+        <li class="list-group-item"><%= "#{product.name} - Rs.: #{product.price}" %></li>
+      <% end %>
+    </ul>
+    <div class="order-status">
+      <%= render partial: "order_status", locals: {order: order, user: user} %>
+    </div>
+  </div>
+</div>

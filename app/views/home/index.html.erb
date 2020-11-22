@@ -1,0 +1,23 @@
+<% if @current_user.is_merchant %>
+  <div>
+    <%= @current_user.email_id %><br>
+    <% @products.each do |product| %>
+      <%="#{product.name} - Rs.#{product.price}" %><br>
+    <% end %>
+  </div>
+<% else %>
+  <div id="flash-message-holder"></div>
+  <%= form_for(@order, remote: true) do |order| %>
+    <% index = 0 %>
+    <% @products.each do |merchant, merchant_products| %>
+      <%= merchant.email_id %><br>  
+      <% merchant_products.each do |merchant_product| %>
+        <%= check_box_tag "order[order_products_attributes[#{index}][product_id]]", merchant_product.id, false %><%="#{merchant_product.name} - Rs.#{merchant_product.price}" %><br>
+        <% index += 1 %>
+      <% end %>
+      <br><br>
+    <% end %>
+    <%= order.submit "Order" %>
+  <% end %>
+  <div id="order-summary-model" class="modal"></div>
+<% end %>

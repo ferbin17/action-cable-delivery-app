@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DeliveryApp</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <% if session[:user_id].present? %>
+      <%= link_to "Orders", orders_path %> |
+      <% link_name = @current_user.is_merchant ? "Products" : "New Order" %>
+      <%= link_to link_name, root_path %> |
+      <%= link_to "Log out", logout_user_index_path %>
+    <% end %>
+    <div class="row">
+      <div class="col-10">
+        <%= yield %>
+      </div>
+      <div class="col-2">
+        <div id="orders-side-div">
+          <% if @order.present? && !@order.new_record? %>
+            <%= render partial: "orders/order_alert", locals: {order: @order} %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <audio id="audio" src="https://www.soundjay.com/button/beep-05.wav" style="display: none;"></audio>
+    <div id="missed-orders-modal" class="modal">
+      <% if @unattended_orders.present? %>
+        <%= render partial: "orders/missed_orders", locals: {unattended_orders: @unattended_orders} %>
+      <% end %>
+    </div>
+  </body>
+</html>

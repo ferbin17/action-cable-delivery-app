@@ -1,0 +1,8 @@
+<% if @order && @order.new_record? %>
+  $('#order-summary-model').html(`<%= render partial: "order_summary", locals: {order: @order} %>`);
+  $('#order-summary-model').show();
+<% else %>
+  // window.location.href = "<%= root_path %>";
+  window.location.href = "<%= orders_path %>";
+<% end %>
+$('#flash-message-holder').html(`<%= render partial: "layouts/flash_messages", locals: {flash: flash} %>`)
