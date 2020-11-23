@@ -5,6 +5,7 @@
         <span class="badge badge-danger badge-secondary">New</span>
       <% end %>
     </h5>
+    <%= order.merchant.try(:email_id) unless user.is_merchant %>
   </div>
   <div class="card-body text-<%= color.to_s %>"
     <ul class="list-group list-group-flush">

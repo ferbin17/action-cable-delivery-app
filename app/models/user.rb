@@ -24,6 +24,10 @@ class User < ApplicationRecord
     false
   end
   
+  def merchant_orders
+    Order.where(merchant_id: self.id)
+  end
+  
   private
   
     def password_match

@@ -1,9 +1,9 @@
-<% if @order && @order.new_record? %>
+<% if @order && @order.new_record? && @order.valid? %>
   $('#order-summary-model').html(`<%= render partial: "order_summary", locals: {order: @order} %>`);
   $('#order-summary-model').show();
 <% else %>
-  <% if @order %>
+  <% if @order && @order.valid? %>
     window.location.href = "<%= orders_path %>";
   <% end %>
 <% end %>
-$('#flash-message-holder').html(`<%= render partial: "layouts/flash_messages", locals: {flash: flash} %>`)
+$('#flash-message-holder').html(`<%= render partial: "layouts/error_messages", locals: {object: @order, flash: flash} %>`)
