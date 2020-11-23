@@ -12,28 +12,34 @@ class Order < ApplicationRecord
   STATUS = {0 => "Cancelled", 1 => "Rejected", 2 => "Accepted",
     3 => "Food Processing", 4 => "On the way", 5 => "Delivered"}
   STAGES_AFTER_ACCEPT = {1 => "Rejected", 2 => "Process Food", 3 => "On the way", 4 => "Delivered"}
-  
+
+  # Total price of products in order
   def order_price
     self.order_products.collect(&:product).sum(&:price)
   end
   
+  # Find merchant from products in order
   def find_merchant
     self.order_products.collect(&:product).collect(&:user).uniq.first
   end
   
+  # Merchant of the order
   def merchant
     User.find_by_id(self.merchant_id)
   end
   
   private
+    # Set total price before creation
     def set_price
       self.total_price = self.order_price
     end
     
+    # Set merhcant after create 
     def set_merchant
       self.update(merchant_id: self.find_merchant.try(:id))
     end
     
+    # Validate status changes
     def validate_status_change
       case self.status_was
       when 0, 1, 5
@@ -48,6 +54,7 @@ class Order < ApplicationRecord
       end
     end
     
+    # Validate one of merchants in order
     def validate_products
       merchants = self.order_products.collect(&:product).collect(&:user).uniq
       self.errors.add(:base, "Select product from only one merchant at a time") if merchants.count > 1
