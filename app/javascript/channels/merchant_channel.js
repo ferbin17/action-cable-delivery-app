@@ -17,11 +17,11 @@ consumer.subscriptions.create("MerchantChannel", {
     if($('#orders').length != 0){
       $(`.card[order-id=${data["content"]}]`).remove();
       $('#orders')[0].prepend($.parseHTML(data["html"])[0]);
-      $('#audio')[0].play(); 
-      setTimeout(function () {
-        $('#audio')[0].play(); 
-      }, 10000);
     }
+    $('#audio')[0].play(); 
+    setTimeout(function () {
+      $('#audio')[0].play(); 
+    }, 10000);
     // Called when there's incoming data on the websocket for this channel
   }
 });

@@ -1,24 +1,22 @@
 class OrdersController < ApplicationController
   
   def index
-    @orders = (@current_user.is_merchant ? @current_user.products.collect(&:orders).first : @current_user.orders).order("id desc")
+    @orders = (@current_user.is_merchant ? @current_user.merchant_orders : @current_user.orders).order("id desc")
   end
 
   def create
     reset_flash_message
     if order_params[:order_products_attributes].present?
       @order = @current_user.orders.build(order_params)
-      session[:order] = order_params
+      session[:order] = order_params if @order.valid?
     elsif params[:confirmed]
       @order = @current_user.orders.build(session[:order])
       if @order.save
         session[:order] = nil
         flash[:success] = "Order Placed"
-        @order.order_merchants.each do |merchant|
-          ActionCable.server.broadcast "merchant_channel_#{merchant.id}", content: @order.id,
-              html: render_to_string(partial: 'order_card', locals: {order: @order, user: merchant, color: ""}),
-              alert: render_to_string(partial: 'order_alert', locals: {order: @order})
-        end
+        ActionCable.server.broadcast "merchant_channel_#{@order.merchant.try(:id)}", content: @order.id,
+            html: render_to_string(partial: 'order_card', locals: {order: @order, user: @order.merchant, color: ""}),
+            alert: render_to_string(partial: 'order_alert', locals: {order: @order, user: @order.merchant})
       end
     else
       flash[:danger] = "Select atleast one Product to order"
@@ -41,17 +39,16 @@ class OrdersController < ApplicationController
           @status_changed = true
           ActionCable.server.broadcast "user_channel_#{@order.user_id}", content: @order.id,
               html: render_to_string(partial: 'order_card', locals: {order: @order, user: @order.user, color: ""}),
-              alert: render_to_string(partial: 'order_alert', locals: {order: @order})
+              alert: render_to_string(partial: 'order_alert', locals: {order: @order, user: @order.user})
         end
       end
     else
       if params[:stage] && params[:stage] == "0"
         if @order.update(status: 0)
           @status_changed = true
-          merchant = @order.order_merchants.uniq.first
-          ActionCable.server.broadcast "merchant_channel_#{merchant.id}", content: @order.id,
-              html: render_to_string(partial: 'order_card', locals: {order: @order, user: merchant, color: ""}),
-              alert: render_to_string(partial: 'order_alert', locals: {order: @order})
+          ActionCable.server.broadcast "merchant_channel_#{@order.merchant.try(:id)}", content: @order.id,
+              html: render_to_string(partial: 'order_card', locals: {order: @order, user: @order.merchant, color: ""}),
+              alert: render_to_string(partial: 'order_alert', locals: {order: @order, user: @order.merchant})
         end
       end
     end

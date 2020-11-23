@@ -3,6 +3,7 @@
     <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
     <% event = order.status.nil? ? "NEW" : "UPDATED" %>
     <strong><%= event %> ORDER !! Order No.: <%= order.id %></strong>
+    <%= order.merchant.try(:email_id) unless user.is_merchant %>
     <p><%= link_to "View", orders_path, class: "btn btn-primary" %></p>
   </div>
 </div>

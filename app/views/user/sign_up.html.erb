@@ -2,7 +2,7 @@
   <div class="col-7 signup-field">
     <h2 class="dark-red">SIGN UP</h2>
     <%= form_for(@user, url: sign_up_user_index_path) do |f| %>
-      <%= render partial: "error_messages", locals:{ user: @user} %>
+      <%= render partial: "layouts/error_messages", locals:{ user: @user} %>
       <div class="field">
         <div class="input-group mb-3">
           <div class="input-group-prepend">

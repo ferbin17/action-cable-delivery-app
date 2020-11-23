@@ -11,8 +11,8 @@ if User.where(is_merchant: false).count == 0
 end
 
 if User.where(is_merchant: true).count == 0
-  User.create(email_id: "merchant_id1@test.com", password: "password", confirm_password: "password", is_merchant: true)
-  User.create(email_id: "merchant_id2@test.com", password: "password", confirm_password: "password", is_merchant: true)
+  User.create(email_id: "merchant1@test.com", password: "password", confirm_password: "password", is_merchant: true)
+  User.create(email_id: "merchant2@test.com", password: "password", confirm_password: "password", is_merchant: true)
 end
 
 if Product.all.count == 0

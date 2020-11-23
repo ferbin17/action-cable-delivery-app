@@ -24,6 +24,7 @@
         <%= yield %>
       </div>
       <div class="col-2">
+        <h5 style="text-align:center; margin: 1% 0;margin-bottom: 10%;">Order Updates</h5>
         <div id="orders-side-div">
           <% if @order.present? && !@order.new_record? %>
             <%= render partial: "orders/order_alert", locals: {order: @order} %>

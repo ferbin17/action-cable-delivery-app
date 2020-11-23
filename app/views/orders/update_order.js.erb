@@ -2,3 +2,4 @@
   $(`.card[order-id=<%= @order.id %>]`).remove();
   $('#orders')[0].prepend($.parseHTML(`<%= render partial: "order_card", locals: {order: @order, user: @current_user, color: ""} %>`)[0]);
 <% end %>
+$('#orders-update-flash').html(`<%= render partial: "layouts/error_messages", locals: {object: @order, flash: flash} %>`)
