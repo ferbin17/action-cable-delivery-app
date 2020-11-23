@@ -12,6 +12,7 @@ class User < ApplicationRecord
   scope :active, -> { where(is_active: true) }
   
   
+  # Authentication method for user
   def authenticate
     user = User.active.where("email_id = ?", self.email_id).first
     if user.present?
@@ -20,22 +21,26 @@ class User < ApplicationRecord
     return false
   end
   
+  # Minimum length if need
   def self.minimum_password_length
     false
   end
   
+  # Orders of a user if user is merchant
   def merchant_orders
     Order.where(merchant_id: self.id)
   end
   
   private
   
+    # Check if password and confirm_password matches
     def password_match
       if password != confirm_password
         errors.add(:password, "doesn't match")
       end
     end
     
+    # Hash password before save so that it cant be directly read from Database.
     def hash_password
       self.password_salt =  SecureRandom.base64(8) if self.password_salt == nil
       self.hashed_password = Digest::SHA1.hexdigest(self.password_salt + self.password)
